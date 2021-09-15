@@ -6,22 +6,95 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.4",
+    "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "sass": "^1.41.0",
     "web-vitals": "^1.1.2"
   },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint": "^7.31.0",
+    "prettier": "^2.3.2"
+  },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js --fix"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "airbnb",
+      "airbnb/hooks",
+      "prettier"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true,
+        "impliedStrict": true,
+        "classes": true,
+        "jsx": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true,
+      "commonjs": true
+    },
+    "plugins": [
+      "prettier",
+      "react-hooks"
+    ],
+    "rules": {
+      "arrow-body-style": [
+        "error",
+        "always"
+      ],
+      "camelcase": 0,
+      "react/prop-types": 0,
+      "no-underscore-dangle": 0,
+      "comma-dangle": 0,
+      "react/jsx-filename-extension": 0,
+      "react/jsx-sort-props": 1,
+      "react/jsx-props-no-spreading": 0,
+      "react/no-unescaped-entities": 0,
+      "react/jsx-uses-react": 1,
+      "react/react-in-jsx-scope": 0,
+      "no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit": true,
+          "allowTernary": true,
+          "allowTaggedTemplates": true
+        }
+      ],
+      "prettier/prettier": [
+        "error",
+        {
+          "trailingComma": "es5",
+          "printWidth": 80,
+          "jsxBracketSameLine": false,
+          "number-leading-zero": null,
+          "arrowParens": "avoid",
+          "singleQuote": true
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
