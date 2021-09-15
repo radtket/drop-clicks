@@ -1,15 +1,16 @@
 $color-white: #fff;
 $red: #f44336;
 $color_cod_gray_approx: #191919;
-$color_zuccini_approx: #0a4a2c;
+
 $color_sunflower_approx: #ddcd22;
 $color_turbo_approx: #efef00;
 $color_jonquil_approx: #dfffa3;
 $color_sushi_approx: #83af3f;
 $color_jewel_approx: #1a8037;
-$color_zuccini_approx: #0a4a04;
 $color_medium_red_violet_approx: #af3f83;
 $color_wild_willow_approx: #a9cc73;
+
+$color_zuccini_approx: #0a4a04;
 $color_bottle_green_approx: #0a4a2d;
 
 * {
@@ -30,6 +31,66 @@ body {
 
 html {
 	height: 100%;
+}
+
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes timer {
+	from {
+		width: 100%;
+		background: $color-white;
+	}
+
+	79% {
+		background: $color-white;
+	}
+
+	80% {
+		background: $red;
+	}
+
+	to {
+		width: 0;
+		background: $red;
+	}
+}
+
+@keyframes scorefadeout {
+	from {
+		opacity: 1;
+		top: 50%;
+	}
+
+	90% {
+		opacity: 0.6;
+	}
+
+	to {
+		top: -30%;
+		opacity: 0;
+	}
+}
+
+@keyframes zoomFadeIn {
+	from {
+		font-size: 0.3em;
+		opacity: 0;
+		visibility: visible;
+	}
+
+	to {
+		font-size: 1.6em;
+		opacity: 1;
+		visibility: visible;
+	}
 }
 
 #root {
@@ -330,36 +391,6 @@ h1 {
 	animation-timing-function: linear;
 }
 
-@keyframes fadein {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes timer {
-	from {
-		width: 100%;
-		background: $color-white;
-	}
-
-	79% {
-		background: $color-white;
-	}
-
-	80% {
-		background: $red;
-	}
-
-	to {
-		width: 0;
-		background: $red;
-	}
-}
-
 .btn-wrapper {
 	text-align: center;
 	margin: 20px;
@@ -430,22 +461,6 @@ h1 {
 	display: none;
 }
 
-@keyframes scorefadeout {
-	from {
-		opacity: 1;
-		top: 50%;
-	}
-
-	90% {
-		opacity: 0.6;
-	}
-
-	to {
-		top: -30%;
-		opacity: 0;
-	}
-}
-
 .last-score {
 	position: absolute;
 	top: 50%;
@@ -498,20 +513,6 @@ h1 {
 	animation-duration: 0.2s;
 }
 
-@keyframes zoomFadeIn {
-	from {
-		font-size: 0.3em;
-		opacity: 0;
-		visibility: visible;
-	}
-
-	to {
-		font-size: 1.6em;
-		opacity: 1;
-		visibility: visible;
-	}
-}
-
 .highscore-wrapper {
 	text-align: center;
 }
@@ -545,9 +546,6 @@ h1 {
 			margin-bottom: 5px;
 		}
 	}
-}
-
-.highscore-score {
 }
 
 .highscore-toggle {

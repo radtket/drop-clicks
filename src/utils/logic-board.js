@@ -1,15 +1,17 @@
+const createEmptyBoard = cells => {
+  return [...Array(cells).keys()];
+};
+
 export const createBoard = (dim, colors) => {
-  const board = [];
-  for (let i = 0; i < dim; i++) {
-    board.push([]);
-    for (let j = 0; j < dim; j++) {
-      board[i].push({
+  const BOARD = createEmptyBoard(dim);
+  return BOARD.map(() => {
+    return BOARD.map(() => {
+      return {
         id: Math.random(),
         val: Math.floor(Math.random() * colors),
-      });
-    }
-  }
-  return board;
+      };
+    });
+  });
 };
 
 export const rotateBoard = board => {
@@ -69,9 +71,9 @@ function shuffleArray(array) {
 }
 
 export const randomizeBoard = board => {
-  const coords = board.reduce((cum, pile, i) => {
-    return cum.concat(
-      pile.map((square, j) => {
+  const coords = board.reduce((all, one, i) => {
+    return all.concat(
+      one.map((square, j) => {
         return [i, j];
       })
     );
@@ -94,14 +96,12 @@ export const randomizeBoard = board => {
 };
 
 const getAdjacentSquares = (dim, board, pileIdx, pileNum) => {
-  const possibleAdjacent = [
+  return [
     [pileIdx, pileNum + 1],
     [pileIdx, pileNum - 1],
     [pileIdx - 1, pileNum],
     [pileIdx + 1, pileNum],
-  ];
-
-  return possibleAdjacent
+  ]
     .filter(([idx, num]) => {
       return (
         typeof board[idx] !== 'undefined' &&
@@ -162,24 +162,20 @@ export const getSquareCollection = (board, row, col) => {
   });
 };
 
-const condensePiles = board => {
-  return board.filter(pile => {
-    return pile.length;
-  });
-};
-
 export const removeSquaresAndCondense = (board, squaresToRemove) => {
   squaresToRemove.forEach(([idx, num]) => {
-    return (board[idx][num] = false);
+    board[idx][num] = false;
   });
 
-  const boardWithPossibleExtraPiles = board.map(pile => {
-    return pile.filter(square => {
-      return square !== false;
+  return board
+    .map(pile => {
+      return pile.filter(square => {
+        return square !== false;
+      });
+    })
+    .filter(pile => {
+      return pile.length;
     });
-  });
-
-  return condensePiles(boardWithPossibleExtraPiles);
 };
 
 export const isLevelOver = (board, movesLeft) => {

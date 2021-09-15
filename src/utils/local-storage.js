@@ -1,11 +1,12 @@
+import { GAME_TYPE_ORIGINAL } from './constants';
 import { newGameState } from './logic-levels';
 
 export const getInitalBoardState = () => {
   return (
     JSON.parse(localStorage.getItem('board-state')) || {
       initialized: false,
-      gameType: 'original',
-      ...newGameState('original'),
+      gameType: GAME_TYPE_ORIGINAL,
+      ...newGameState(GAME_TYPE_ORIGINAL),
       // So timer isn't active
       gameOver: true,
       paused: false,
@@ -13,13 +14,9 @@ export const getInitalBoardState = () => {
   );
 };
 
-const defaultScores = {
-  original: [],
-  puzzle: [],
-};
-
 export const getHighScores = () => {
   const scores = localStorage.getItem('scores');
+
   if (scores) {
     const parsedScores = JSON.parse(scores);
     // Previous versions will not have a puzzle array
@@ -28,15 +25,22 @@ export const getHighScores = () => {
     }
     return parsedScores;
   }
-  return defaultScores;
+
+  return {
+    original: [],
+    puzzle: [],
+  };
 };
 
 export const saveState = state => {
-  // Don't need the animation to replay...
-  state.lastScore = 0;
+  const copy = { ...state };
 
-  if (state.levelOver) {
+  // Don't need the animation to replay...
+  copy.lastScore = 0;
+
+  if (copy.levelOver) {
     // Lets grab the next level
   }
-  localStorage.setItem('board-state', JSON.stringify(state));
+
+  localStorage.setItem('board-state', JSON.stringify(copy));
 };

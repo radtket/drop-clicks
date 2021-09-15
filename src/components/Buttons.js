@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { capitalizeFirstLetter } from '../utils/helpers';
+import { GAME_TYPE_ORIGINAL, GAME_TYPE_PUZZLE } from '../utils/constants';
 
 const Icon = ({ gameType }) => {
   return (
     <i
       className={classNames('fa', {
-        'fa-clock': gameType === 'original',
-        'fa-puzzle-piece': gameType === 'puzzle',
+        'fa-clock': gameType === GAME_TYPE_ORIGINAL,
+        'fa-puzzle-piece': gameType === GAME_TYPE_PUZZLE,
       })}
       style={{ marginLeft: '0.2em' }}
     />

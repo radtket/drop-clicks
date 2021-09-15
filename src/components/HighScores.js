@@ -5,6 +5,7 @@ import { getHighScores } from '../utils/local-storage';
 import Subtitle from './Subtitle';
 import HighScoreRow from './HighScoreRow';
 import { ButtonPlayGameType } from './Buttons';
+import { GAME_TYPE_ORIGINAL, GAME_TYPE_PUZZLE } from '../utils/constants';
 
 const getPlace = ({ scores, currentScore, currentInitials }) => {
   const placeIndex = scores.findIndex(score => {
@@ -133,8 +134,10 @@ const HighScores = ({
       </div>
 
       <div className="btn-wrapper">
-        <ButtonPlayGameType {...{ restartGame, gameType: 'original' }} />
-        <ButtonPlayGameType {...{ restartGame, gameType: 'puzzle' }} />
+        <ButtonPlayGameType
+          {...{ restartGame, gameType: GAME_TYPE_ORIGINAL }}
+        />
+        <ButtonPlayGameType {...{ restartGame, gameType: GAME_TYPE_PUZZLE }} />
       </div>
     </>
   );

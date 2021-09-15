@@ -5,11 +5,12 @@ import Overlay from './Overlay';
 import HighScores from './HighScores';
 import { getHighScores } from '../utils/local-storage';
 import { ButtonHighScore, ButtonPlayGameType } from './Buttons';
+import { GAME_TYPE_ORIGINAL, GAME_TYPE_PUZZLE } from '../utils/constants';
 
 const InitialOverlay = ({ restartGame }) => {
   const [state, setState] = useState({
     showHighScore: false,
-    gameType: 'original',
+    gameType: GAME_TYPE_ORIGINAL,
   });
 
   return (
@@ -18,19 +19,19 @@ const InitialOverlay = ({ restartGame }) => {
         <>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <ButtonPlayGameType
-              {...{ restartGame, gameType: 'original', hasIcon: true }}
+              {...{ restartGame, gameType: GAME_TYPE_ORIGINAL, hasIcon: true }}
             />
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <ButtonPlayGameType
-              {...{ restartGame, gameType: 'puzzle', hasIcon: true }}
+              {...{ restartGame, gameType: GAME_TYPE_PUZZLE, hasIcon: true }}
             />
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <ButtonHighScore {...{ setState, gameType: 'original' }} />
+            <ButtonHighScore {...{ setState, gameType: GAME_TYPE_ORIGINAL }} />
           </div>
           <div className="button-wrapper">
-            <ButtonHighScore {...{ setState, gameType: 'puzzle' }} />
+            <ButtonHighScore {...{ setState, gameType: GAME_TYPE_PUZZLE }} />
           </div>
         </>
       ) : (

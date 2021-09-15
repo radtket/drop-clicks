@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Overlay from './Overlay';
 import { ButtonPlayGameType } from './Buttons';
+import { GAME_TYPE_ORIGINAL, GAME_TYPE_PUZZLE } from '../utils/constants';
 
 const Paused = ({ rotation, resumeGame, restartGame }) => {
   return (
@@ -13,10 +14,12 @@ const Paused = ({ rotation, resumeGame, restartGame }) => {
         </button>
       </div>
       <div className="paused-button-wrapper">
-        <ButtonPlayGameType {...{ restartGame, gameType: 'original' }} />
+        <ButtonPlayGameType
+          {...{ restartGame, gameType: GAME_TYPE_ORIGINAL }}
+        />
       </div>
       <div className="paused-button-wrapper">
-        <ButtonPlayGameType {...{ restartGame, gameType: 'puzzle' }} />
+        <ButtonPlayGameType {...{ restartGame, gameType: GAME_TYPE_PUZZLE }} />
       </div>
     </Overlay>
   );

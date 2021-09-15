@@ -230,6 +230,7 @@ class App extends Component {
 
     const inactive = !initialized || levelOver || gameOver || paused;
     const isSideways = effectiveRotation % 2;
+
     return (
       <div id="wrapper">
         <div className=" header clearfix">

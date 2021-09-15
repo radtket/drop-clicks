@@ -1,20 +1,12 @@
-import { ORIGINAL_LEVELS, PUZZLE_LEVELS } from './constants';
+import { GAME_TYPE_ORIGINAL, LEVELS_ENUM } from './constants';
 import { createBoard } from './logic-board';
 
 export const isGameOrigional = gameType => {
-  return gameType === 'original';
+  return gameType === GAME_TYPE_ORIGINAL;
 };
 
 export const getLevels = gameType => {
-  switch (gameType) {
-    case 'original':
-      return ORIGINAL_LEVELS;
-    case 'puzzle':
-      return PUZZLE_LEVELS;
-
-    default:
-      throw new Error('No game type');
-  }
+  return LEVELS_ENUM[gameType];
 };
 
 export const getLevelInfo = (level, gameType) => {
@@ -63,15 +55,15 @@ export const newGameState = gameType => {
 
   return {
     ...levelInfo,
-    clicks: 0,
     bestGroup: 0,
-    score: 0,
-    level: 0,
-    levelOver: false,
+    clicks: 0,
     gameOver: false,
-    rotating: false,
     hasBeenPaused: false,
     lastScore: 0,
+    level,
+    levelOver: false,
+    rotating: false,
+    score: 0,
   };
 };
 
