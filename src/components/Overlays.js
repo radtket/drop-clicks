@@ -56,8 +56,8 @@ const Overlays = props => {
 };
 
 Overlays.propTypes = {
-  gameType: PropTypes.string.isRequired,
   gameOver: PropTypes.bool.isRequired,
+  gameType: PropTypes.string.isRequired,
   goToNextLevel: PropTypes.func.isRequired,
   initialized: PropTypes.bool.isRequired,
   level: PropTypes.number.isRequired,

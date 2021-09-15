@@ -5,14 +5,13 @@ import './App.scss';
 // Components
 import Overlays from './components/Overlays';
 import Square from './components/Square';
-import Buttons from './components/Buttons';
+import BottomNav from './components/BottomNav';
 import LastScore from './components/LastScore';
 import Timer from './components/Timer';
 
 import { GAME_SIZE } from './utils/constants';
 import { getElapsedTime } from './utils/helpers';
-
-import { saveState } from './utils/local-storage';
+import { getInitalBoardState, saveState } from './utils/local-storage';
 import {
   getPieceBonus,
   getSquareCollection,
@@ -32,21 +31,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const boardState = JSON.parse(localStorage.getItem('board-state'));
-
-    if (boardState) {
-      this.state = boardState;
-    } else {
-      this.state = {
-        // Show initial play screen
-        initialized: false,
-        gameType: 'original',
-        ...newGameState('original'),
-        // So timer isn't active
-        gameOver: true,
-        paused: false,
-      };
-    }
+    this.state = getInitalBoardState();
   }
 
   UNSAFE_componentWillMount() {
@@ -77,17 +62,6 @@ class App extends Component {
         });
       }
     }
-  };
-
-  handleResume = () => {
-    const { elapsedTime } = this.state;
-    const startTime = new Date().getTime() - elapsedTime;
-    this.setState({ hasBeenPaused: true, paused: false, startTime });
-    localStorage.removeItem('board-state');
-  };
-
-  setGameOver = () => {
-    this.setState({ gameOver: true });
   };
 
   handleClick = (row, col) => {
@@ -161,60 +135,19 @@ class App extends Component {
   };
 
   handleRandom = () => {
-    const { state } = this;
-    const { movesLeft } = state;
+    const { movesLeft, board } = this.state;
 
     if (this.canUseMove()) {
-      const board = randomizeBoard(state.board);
+      const BOARD = randomizeBoard(board);
 
-      const levelOver = isLevelOver(board, movesLeft - 1);
-      const levelOverState = this.handleLevelOver(levelOver, board);
+      const levelOver = isLevelOver(BOARD, movesLeft - 1);
+      const levelOverState = this.handleLevelOver(levelOver, BOARD);
       this.setState({
-        board,
+        board: BOARD,
         movesLeft: movesLeft - 1,
         levelOver,
         ...levelOverState,
       });
-    }
-  };
-
-  handleRestart = gameType => {
-    return () => {
-      this.setState({
-        ...newGameState(gameType),
-        gameType,
-        initialized: true,
-        paused: false,
-      });
-      localStorage.removeItem('board-state');
-    };
-  };
-
-  resetEverything = () => {
-    this.setState({ initialized: false });
-  };
-
-  goToNextLevel = () => {
-    const newState = getNextLevelState(this.state);
-    this.setState(newState);
-  };
-
-  handleTransitionEnd = () => {
-    const { state } = this;
-
-    // there may be more transitions some day
-    if (state.rotating) {
-      const board =
-        state.rotationDirection === 1
-          ? rotateBoard(state.board)
-          : rotateBoardCounter(state.board);
-      const rotation = state.rotation + state.rotationDirection;
-      this.setState({ rotating: false, rotation, falling: true, board });
-
-      if (isLevelOver(board, state.movesLeft)) {
-        const levelOverState = this.handleLevelOver(true, board);
-        this.setState({ levelOver: true, ...levelOverState });
-      }
     }
   };
 
@@ -261,33 +194,33 @@ class App extends Component {
     };
   };
 
-  canUseMove() {
+  canUseMove = () => {
     const { movesLeft, gameOver, levelOver } = this.state;
     return movesLeft > 0 && !gameOver && !levelOver;
-  }
+  };
 
   render() {
     const {
-      dim,
       board,
-      rotation,
-      rotating,
-      rotationDirection,
-      falling,
-      initialized,
-      levelOver,
-      gameOver,
-      paused,
-      level,
       clicks,
-      score,
-      lastScore,
-      gameType,
+      dim,
       elapsedTime,
+      falling,
+      gameOver,
+      gameType,
       hasBeenPaused,
+      initialized,
+      lastScore,
+      level,
+      levelOver,
+      movesLeft,
+      paused,
+      rotating,
+      rotation,
+      rotationDirection,
+      score,
       startTime,
       time,
-      movesLeft,
     } = this.state;
 
     const effectiveRotation = rotating
@@ -320,10 +253,32 @@ class App extends Component {
         <div style={{ position: 'relative' }}>
           {inactive && (
             <Overlays
-              goToNextLevel={this.goToNextLevel}
-              resetGame={this.resetEverything}
-              restartGame={this.handleRestart}
-              resumeGame={this.handleResume}
+              goToNextLevel={() => {
+                const newState = getNextLevelState(this.state);
+                this.setState(newState);
+              }}
+              resetGame={() => {
+                this.setState({ initialized: false });
+              }}
+              restartGame={newGameType => {
+                return () => {
+                  this.setState({
+                    ...newGameState(newGameType),
+                    gameType: newGameType,
+                    initialized: true,
+                    paused: false,
+                  });
+                  localStorage.removeItem('board-state');
+                };
+              }}
+              resumeGame={() => {
+                this.setState({
+                  hasBeenPaused: true,
+                  paused: false,
+                  startTime: new Date().getTime() - elapsedTime,
+                });
+                localStorage.removeItem('board-state');
+              }}
               rotation={effectiveRotation}
               {...this.state}
               paused={paused}
@@ -337,7 +292,27 @@ class App extends Component {
               upright: !isSideways,
             })}
             id="game"
-            onTransitionEnd={this.handleTransitionEnd}
+            onTransitionEnd={() => {
+              // there may be more transitions some day
+              if (rotating) {
+                const BOARD =
+                  rotationDirection === 1
+                    ? rotateBoard(board)
+                    : rotateBoardCounter(board);
+
+                this.setState({
+                  rotating: false,
+                  rotation: rotation + rotationDirection,
+                  falling: true,
+                  board: BOARD,
+                });
+
+                if (isLevelOver(BOARD, movesLeft)) {
+                  const levelOverState = this.handleLevelOver(true, BOARD);
+                  this.setState({ levelOver: true, ...levelOverState });
+                }
+              }
+            }}
             style={{
               height: `${GAME_SIZE}px`,
               width: `${GAME_SIZE}px`,
@@ -375,12 +350,14 @@ class App extends Component {
             active={!inactive}
             elapsedTime={elapsedTime}
             hasBeenPaused={hasBeenPaused}
-            setGameOver={this.setGameOver}
+            setGameOver={() => {
+              this.setState({ gameOver: true });
+            }}
             startTime={startTime}
             time={time}
           />
         )}
-        <Buttons
+        <BottomNav
           active={!inactive}
           handleRandom={this.handleRandom}
           handleRotate={this.handleRotate}

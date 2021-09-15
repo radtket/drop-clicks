@@ -1,15 +1,16 @@
 import { newGameState } from './logic-levels';
 
 export const getInitalBoardState = () => {
-  const boardState = JSON.parse(localStorage.getItem('board-state')) || {
-    initialized: false,
-    gameType: 'original',
-    ...newGameState('original'),
-    // So timer isn't active
-    gameOver: true,
-    paused: false,
-  };
-  console.log({ boardState });
+  return (
+    JSON.parse(localStorage.getItem('board-state')) || {
+      initialized: false,
+      gameType: 'original',
+      ...newGameState('original'),
+      // So timer isn't active
+      gameOver: true,
+      paused: false,
+    }
+  );
 };
 
 const defaultScores = {

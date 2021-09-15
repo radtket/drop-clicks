@@ -1,136 +1,148 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { getHighScores } from '../utils/local-storage';
 import Subtitle from './Subtitle';
 import HighScoreRow from './HighScoreRow';
+import { ButtonPlayOriginal, ButtonPlayPlayPuzzle } from './Buttons';
 
-class HighScores extends Component {
-  constructor(props) {
-    super(props);
-    // This should be a prop
-    const { gameType } = props;
+const getPlace = ({ scores, currentScore, currentInitials }) => {
+  const placeIndex = scores.findIndex(score => {
+    return score.score === currentScore && score.initials === currentInitials;
+  });
 
-    // get local scores
-    const localScores = getHighScores();
+  if (placeIndex !== -1) {
+    return placeIndex + 1;
+  }
+  // No such thing as zero place, right?
+  return 0;
+};
 
-    // Determine which to show first
-    let showGlobal = true;
-    if (this.props.currentScore && this.props.globalPlace > 10) {
-      // Show if it's a local high score, but not global
-      if (this.getPlace(localScores[gameType])) {
-        showGlobal = false;
-      }
+const getInitialState = ({
+  gameType,
+  globalPlace,
+  currentScore,
+  currentInitials,
+}) => {
+  // get local scores
+  const localScores = getHighScores();
+
+  // Determine which to show first
+  let showGlobal = true;
+  if (currentScore && globalPlace > 10) {
+    // Show if it's a local high score, but not global
+    if (
+      getPlace({ scores: localScores[gameType], currentScore, currentInitials })
+    ) {
+      showGlobal = false;
     }
-    this.state = {
-      gameType,
-      loading: true,
-      localScores,
-      showGlobal,
-    };
   }
 
-  componentDidMount = async () => {
-    const res = await axios.get(
-      'https://wcs0oio6th.execute-api.us-east-1.amazonaws.com/dev/score'
+  return {
+    loading: true,
+    localScores,
+    showGlobal,
+  };
+};
+
+const HighScores = ({
+  globalPlace,
+  globalPlays,
+  currentScore,
+  currentInitials,
+  restartGame,
+  gameType,
+}) => {
+  const [{ showGlobal, globalScores, localScores, loading }, setState] =
+    useState(
+      getInitialState({
+        gameType,
+        globalPlace,
+        currentScore,
+        currentInitials,
+      })
     );
 
-    this.setState({ loading: false, globalScores: res.data.scores });
-  };
+  useEffect(() => {
+    return axios
+      .get('https://wcs0oio6th.execute-api.us-east-1.amazonaws.com/dev/score')
+      .then(({ data }) => {
+        setState(prev => {
+          return { ...prev, loading: false, globalScores: data.scores };
+        });
+      });
+  }, []);
 
-  getPlace(scores) {
-    const placeIndex = scores.findIndex(score => {
-      return (
-        score.score === this.props.currentScore &&
-        score.initials === this.props.currentInitials
-      );
-    });
-
-    if (placeIndex !== -1) {
-      return placeIndex + 1;
-    }
-    // No such thing as zero place, right?
-    return 0;
+  if (loading) {
+    return 'Retrieving Scores...';
   }
 
-  getCurrentScores() {
-    const { gameType, showGlobal, globalScores, localScores } = this.state;
-    return showGlobal ? globalScores[gameType] : localScores[gameType];
-  }
+  const currentScores = showGlobal
+    ? globalScores[gameType]
+    : localScores[gameType];
 
-  toggle = () => {
-    this.setState({ showGlobal: !this.state.showGlobal });
-  };
+  const place = getPlace({
+    scores: currentScores,
+    currentScore,
+    currentInitials,
+  });
 
-  render() {
-    if (this.state.loading) {
-      return 'Retrieving Scores...';
-    }
-    const { showGlobal } = this.state;
-    const { globalPlace, globalPlays } = this.props;
-    const currentScores = this.getCurrentScores();
-    const place = this.getPlace(currentScores);
-    return (
-      <>
-        <h2>
-          <span className="highscore-toggle" onClick={this.toggle}>
-            <span className="highscore-toggle-arrow">⇣</span>
-            {showGlobal ? 'Global' : 'Your'}
-          </span>{' '}
-          High Scores
-        </h2>
+  return (
+    <>
+      <h2>
+        <button
+          className="highscore-toggle"
+          onClick={() => {
+            setState(prev => {
+              return { ...prev, showGlobal: !prev.showGlobal };
+            });
+          }}
+          type="button"
+        >
+          <span className="highscore-toggle-arrow">⇣</span>
+          {showGlobal ? 'Global' : 'Your'}
+        </button>{' '}
+        High Scores
+      </h2>
 
-        <Subtitle {...{ showGlobal, place, globalPlace, globalPlays }} />
+      <Subtitle {...{ showGlobal, place, globalPlace, globalPlays }} />
 
-        <div className="highscore-wrapper">
-          <ol className="highscore-table">
-            {currentScores.map((score, i) => {
-              return (
-                <HighScoreRow
-                  key={i}
-                  i={i}
-                  place={place}
-                  {...{
-                    ...score,
-                    isNewScore: Boolean(place && i === place - 1),
-                    highscorePlace: i + 1,
-                  }}
-                />
-              );
-            })}
-          </ol>
-          {!currentScores.length && (
-            <div>
-              <p>No scores found.</p>
-              <p>Try playing a game!</p>
-            </div>
-          )}
-        </div>
+      <div className="highscore-wrapper">
+        <ol className="highscore-table">
+          {currentScores.map((score, i) => {
+            return (
+              <HighScoreRow
+                key={i}
+                i={i}
+                place={place}
+                {...{
+                  ...score,
+                  isNewScore: Boolean(place && i === place - 1),
+                  highscorePlace: i + 1,
+                }}
+              />
+            );
+          })}
+        </ol>
+        {!currentScores.length && (
+          <div>
+            <p>No scores found.</p>
+            <p>Try playing a game!</p>
+          </div>
+        )}
+      </div>
 
-        <div className="btn-wrapper">
-          <button
-            className="btn"
-            onClick={this.props.restartGame('original')}
-            type="button"
-          >
-            Play Original
-          </button>
-          <button
-            className="btn"
-            onClick={this.props.restartGame('puzzle')}
-            type="button"
-          >
-            Play Puzzle
-          </button>
-        </div>
-      </>
-    );
-  }
-}
+      <div className="btn-wrapper">
+        <ButtonPlayOriginal {...{ restartGame }} />
+        <ButtonPlayPlayPuzzle {...{ restartGame }} />
+      </div>
+    </>
+  );
+};
 
 HighScores.propTypes = {
-  currentScore: PropTypes.number,
   currentInitials: PropTypes.string,
+  currentScore: PropTypes.number,
   gameType: PropTypes.string.isRequired,
   globalPlace: PropTypes.number,
   globalPlays: PropTypes.number,

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Overlay from './Overlay';
 import HighScores from './HighScores';
 import { getHighScores } from '../utils/local-storage';
+import { ButtonPlayOriginal, ButtonPlayPlayPuzzle } from './Buttons';
 
 const InitialOverlay = ({ restartGame }) => {
   const [state, setState] = useState({
@@ -16,27 +17,10 @@ const InitialOverlay = ({ restartGame }) => {
       {!state.showHighScore ? (
         <>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <button
-              className="btn overlay-btn"
-              onClick={restartGame('original')}
-              type="button"
-            >
-              Play Original
-              <i className="fa fa-clock" style={{ marginLeft: '0.2em' }} />
-            </button>
+            <ButtonPlayOriginal {...{ restartGame, hasIcon: true }} />
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <button
-              className="btn overlay-btn"
-              onClick={restartGame('puzzle')}
-              type="button"
-            >
-              Play Puzzle
-              <i
-                className="fa fa-puzzle-piece"
-                style={{ marginLeft: '0.2em' }}
-              />
-            </button>
+            <ButtonPlayPlayPuzzle {...{ restartGame, hasIcon: true }} />
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <button

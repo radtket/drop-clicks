@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -10,27 +10,47 @@ import { getHighScores } from '../utils/local-storage';
 import HighScoreFragment from './HighScoreFragment';
 import { checkHighScore, createNewHighScores } from '../utils/helpers';
 
-class GameOver extends Component {
-  constructor(props) {
-    super(props);
-    const initials = localStorage.getItem('initials') || '';
-    const highscores = getHighScores();
-    const isHighScore = checkHighScore(props.score, highscores[props.gameType]);
+const getInitalState = ({ score, gameType }) => {
+  const initials = localStorage.getItem('initials') || '';
+  const highscores = getHighScores();
+  const isHighScore = checkHighScore(score, highscores[gameType]);
+  return {
+    highscores,
+    isHighScore,
+    initials,
+    submitted: false,
+    highscoresLocal: null,
+    highscoresGlobal: null,
+    globalPlace: null,
+    globalPlays: null,
+  };
+};
 
-    this.state = {
-      highscores,
-      isHighScore,
+const GameOver = ({
+  bestGroup,
+  gameType,
+  level,
+  resetGame,
+  restartGame,
+  rotation,
+  score,
+}) => {
+  const [state, setState] = useState(getInitalState({ score, gameType }));
+
+  const createScoreObj = ({ initials }) => {
+    return {
+      score,
       initials,
+      level,
+      bestGroup,
+      date: DateTime.local().toISO(),
     };
-  }
+  };
 
   // This should return an identical object,
-  updateLocalHighScores = () => {
-    const { gameType } = this.props;
-    const { highscores, initials } = this.state;
-
+  const updateLocalHighScores = ({ highscores, initials }) => {
     const newHighScores = createNewHighScores(
-      this.createScoreObj(),
+      createScoreObj({ initials }),
       highscores[gameType]
     );
 
@@ -47,88 +67,73 @@ class GameOver extends Component {
     return newHighScores;
   };
 
-  render() {
-    const {
-      globalPlace,
-      globalPlays,
-      highscores,
-      highscoresGlobal,
-      highscoresLocal,
-      initials,
-      isHighScore,
-      submitted,
-    } = this.state;
+  const {
+    globalPlace,
+    globalPlays,
+    highscores,
+    highscoresGlobal,
+    highscoresLocal,
+    initials,
+    isHighScore,
+    submitted,
+  } = state;
 
-    const {
-      bestGroup,
-      gameType,
-      level,
-      resetGame,
-      restartGame,
-      rotation,
-      score,
-    } = this.props;
+  return (
+    <Overlay highScore={submitted} rotation={rotation}>
+      {submitted ? (
+        <HighScores
+          currentInitials={initials}
+          currentScore={score}
+          gameType={gameType}
+          globalPlace={globalPlace}
+          globalPlays={globalPlays}
+          highscoresGlobal={highscoresGlobal}
+          highscoresLocal={highscoresLocal}
+          restartGame={restartGame}
+          scores={highscores.original}
+        />
+      ) : (
+        <>
+          <h2>Game Over</h2>
+          <h3 className="final-score">Score: {score}</h3>
+          <HighScoreFragment
+            {...{
+              handleChange: ({ target }) => {
+                setState(prev => {
+                  return { ...prev, initials: target.value.toUpperCase() };
+                });
+              },
+              handleSubmit: async () => {
+                if (initials.length > 1) {
+                  const res = await axios.post(
+                    'https://wcs0oio6th.execute-api.us-east-1.amazonaws.com/dev/score',
+                    { ...createScoreObj(state), type: gameType }
+                  );
 
-    return (
-      <Overlay highScore={submitted} rotation={rotation}>
-        {submitted ? (
-          <HighScores
-            currentInitials={initials}
-            currentScore={score}
-            gameType={gameType}
-            globalPlace={globalPlace}
-            globalPlays={globalPlays}
-            highscoresGlobal={highscoresGlobal}
-            highscoresLocal={highscoresLocal}
-            restartGame={restartGame}
-            scores={highscores.original}
-          />
-        ) : (
-          <>
-            <h2>Game Over</h2>
-            <h3 className="final-score">Score: {score}</h3>
-            <HighScoreFragment
-              {...{
-                handleChange: e => {
-                  this.setState({ initials: e.target.value.toUpperCase() });
-                },
-                handleSubmit: async () => {
-                  if (initials.length > 1) {
-                    const newHighScores = this.updateLocalHighScores();
-
-                    const res = await axios.post(
-                      'https://wcs0oio6th.execute-api.us-east-1.amazonaws.com/dev/score',
-                      {
-                        score,
-                        initials,
-                        level,
-                        bestGroup,
-                        date: DateTime.local().toISO(),
-                        type: gameType,
-                      }
-                    );
-
-                    this.setState({
+                  setState(prev => {
+                    const newHighScores = updateLocalHighScores(prev);
+                    return {
+                      ...prev,
                       submitted: true,
                       // Shouldn't be used.
                       highscoresLocal: newHighScores,
                       highscoresGlobal: res.data.top10,
                       globalPlace: res.data.place,
                       globalPlays: res.data.total,
-                    });
-                  }
-                },
-                initials,
-                isHighScore,
-                resetGame,
-              }}
-            />
-          </>
-        )}
-      </Overlay>
-    );
-  }
-}
+                    };
+                  });
+                }
+              },
+              initials,
+              isHighScore,
+              resetGame,
+            }}
+          />
+        </>
+      )}
+    </Overlay>
+  );
+};
 
 GameOver.propTypes = {
   bestGroup: PropTypes.number.isRequired,

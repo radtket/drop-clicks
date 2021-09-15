@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Overlay from './Overlay';
-import { get_levels } from '../utils/logic-levels';
+import { isLevelComplete } from '../utils/logic-levels';
 
 const LevelOver = ({
   gameType,
@@ -13,9 +13,7 @@ const LevelOver = ({
   rotation,
   goToNextLevel,
 }) => {
-  const LEVELS = get_levels(gameType);
-  const COMPLETED = level === LEVELS.length;
-  const TOTAL_BONUS = timeBonus + pieceBonus + levelBonus;
+  const COMPLETED = isLevelComplete({ level, gameType });
 
   return (
     <Overlay rotation={rotation}>
@@ -34,7 +32,7 @@ const LevelOver = ({
           Piece Bonus: <span>{pieceBonus}</span>
         </h3>
         <h3 className="total-score">
-          Total Bonus: <span>{TOTAL_BONUS}</span>
+          Total Bonus: <span>{timeBonus + pieceBonus + levelBonus}</span>
         </h3>
       </div>
       <div className="next-level" style={{ textAlign: 'center' }}>

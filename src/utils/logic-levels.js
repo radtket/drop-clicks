@@ -28,14 +28,17 @@ export const getLevelInfo = (level, gameType) => {
   };
 };
 
+export const isLevelComplete = ({ level, gameType }) => {
+  return level === get_levels(gameType).length;
+};
+
 export const getNextLevelState = state => {
   const level = state.level + 1;
 
-  const LEVELS = get_levels(state.gameType);
-  if (level === LEVELS.length) {
+  if (isLevelComplete({ level, gameType: state.gameType })) {
     const score =
       state.score + state.pieceBonus + state.timeBonus + state.levelBonus;
-    const level = state.level + 1;
+
     return { gameOver: true, levelOver: false, score, level };
   }
 

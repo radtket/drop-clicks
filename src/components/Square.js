@@ -15,9 +15,7 @@ const Square = ({
     left: 0,
   };
 
-  const MOD_ROTATION = ((rotation % 4) + 4) % 4;
-
-  switch (MOD_ROTATION) {
+  switch (((rotation % 4) + 4) % 4) {
     case 0:
       POSTION.top = squareHeight * (dim - row - 1);
       POSTION.left = squareHeight * col;
