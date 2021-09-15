@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Overlay from './Overlay';
 import HighScores from './HighScores';
 import { getHighScores } from '../utils/local-storage';
-import { ButtonPlayOriginal, ButtonPlayPlayPuzzle } from './Buttons';
+import { ButtonHighScore, ButtonPlayGameType } from './Buttons';
 
 const InitialOverlay = ({ restartGame }) => {
   const [state, setState] = useState({
@@ -17,43 +17,20 @@ const InitialOverlay = ({ restartGame }) => {
       {!state.showHighScore ? (
         <>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <ButtonPlayOriginal {...{ restartGame, hasIcon: true }} />
+            <ButtonPlayGameType
+              {...{ restartGame, gameType: 'original', hasIcon: true }}
+            />
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <ButtonPlayPlayPuzzle {...{ restartGame, hasIcon: true }} />
+            <ButtonPlayGameType
+              {...{ restartGame, gameType: 'puzzle', hasIcon: true }}
+            />
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <button
-              className="btn overlay-btn"
-              onClick={() => {
-                setState({
-                  showHighScore: true,
-                  gameType: 'original',
-                });
-              }}
-              type="button"
-            >
-              High Scores
-              <i className="fa fa-clock" style={{ marginLeft: '0.2em' }} />
-            </button>
+            <ButtonHighScore {...{ setState, gameType: 'original' }} />
           </div>
           <div className="button-wrapper">
-            <button
-              className="btn overlay-btn"
-              onClick={() => {
-                setState({
-                  showHighScore: true,
-                  gameType: 'puzzle',
-                });
-              }}
-              type="button"
-            >
-              High Scores
-              <i
-                className="fa fa-puzzle-piece"
-                style={{ marginLeft: '0.2em' }}
-              />
-            </button>
+            <ButtonHighScore {...{ setState, gameType: 'puzzle' }} />
           </div>
         </>
       ) : (

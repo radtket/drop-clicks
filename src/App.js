@@ -24,6 +24,7 @@ import {
 import {
   getNextLevelState,
   getTimeBonus,
+  isGameOrigional,
   newGameState,
 } from './utils/logic-levels';
 
@@ -178,7 +179,7 @@ class App extends Component {
     const { gameType, level, startTime } = this.state;
     const pieceBonus = getPieceBonus(board);
 
-    if (gameType === 'original') {
+    if (isGameOrigional(gameType)) {
       // Return bonuses
       return {
         pieceBonus,
@@ -345,7 +346,7 @@ class App extends Component {
               })}
           </div>
         </div>
-        {gameType === 'original' && (
+        {isGameOrigional(gameType) && (
           <Timer
             active={!inactive}
             elapsedTime={elapsedTime}

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Overlay from './Overlay';
-import { isLevelComplete } from '../utils/logic-levels';
+import { isGameOrigional, isLevelComplete } from '../utils/logic-levels';
 
 const LevelOver = ({
   gameType,
@@ -19,7 +19,7 @@ const LevelOver = ({
     <Overlay rotation={rotation}>
       <h2>{COMPLETED ? 'Game Completed!' : `Level ${level} Completed`}</h2>
       <div className="bonus-wrapper">
-        {gameType === 'original' ? (
+        {isGameOrigional(gameType) ? (
           <h3 className="time-bonus">
             Time Bonus: <span>{timeBonus}</span>
           </h3>

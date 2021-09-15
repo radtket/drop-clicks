@@ -6,22 +6,24 @@ import Paused from './Paused';
 import LevelOver from './LevelOver';
 import GameOver from './GameOver';
 
-const Overlays = props => {
-  const {
-    gameType,
-    gameOver,
-    goToNextLevel,
-    initialized,
-    level,
-    levelBonus,
-    levelOver,
-    paused,
-    pieceBonus,
-    restartGame,
-    resumeGame,
-    rotation,
-    timeBonus,
-  } = props;
+const Overlays = ({
+  bestGroup,
+  gameOver,
+  gameType,
+  goToNextLevel,
+  initialized,
+  level,
+  levelBonus,
+  levelOver,
+  paused,
+  pieceBonus,
+  resetGame,
+  restartGame,
+  resumeGame,
+  rotation,
+  score,
+  timeBonus,
+}) => {
   if (!initialized) {
     return <Initial restartGame={restartGame} />;
   }
@@ -35,9 +37,23 @@ const Overlays = props => {
       />
     );
   }
+
   if (gameOver) {
-    return <GameOver {...props} />;
+    return (
+      <GameOver
+        {...{
+          bestGroup,
+          gameType,
+          level,
+          resetGame,
+          restartGame,
+          rotation,
+          score,
+        }}
+      />
+    );
   }
+
   if (levelOver) {
     return (
       <LevelOver
@@ -70,6 +86,12 @@ Overlays.propTypes = {
   resumeGame: PropTypes.func.isRequired,
   rotation: PropTypes.number.isRequired,
   timeBonus: PropTypes.number,
+};
+
+Overlays.defaultProps = {
+  levelBonus: 0,
+  pieceBonus: 0,
+  timeBonus: 0,
 };
 
 export default Overlays;

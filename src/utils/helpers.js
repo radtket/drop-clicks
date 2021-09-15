@@ -1,8 +1,8 @@
 import { HIGH_SCORES_KEPT } from './constants';
-import { get_levels } from './logic-levels';
+import { getLevels } from './logic-levels';
 
 export const getElapsedTime = ({ level, startTime, gameType }) => {
-  const LEVELS = get_levels(gameType);
+  const LEVELS = getLevels(gameType);
   const currentTime = new Date().getTime();
 
   const levelTime = LEVELS[level].time * 1000;
@@ -31,4 +31,8 @@ export const createNewHighScores = (scoreObj, highScores) => {
   });
 
   return highScores.slice(0, HIGH_SCORES_KEPT);
+};
+
+export const capitalizeFirstLetter = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };

@@ -1,7 +1,11 @@
 import { ORIGINAL_LEVELS, PUZZLE_LEVELS } from './constants';
 import { createBoard } from './logic-board';
 
-export const get_levels = gameType => {
+export const isGameOrigional = gameType => {
+  return gameType === 'original';
+};
+
+export const getLevels = gameType => {
   switch (gameType) {
     case 'original':
       return ORIGINAL_LEVELS;
@@ -14,7 +18,7 @@ export const get_levels = gameType => {
 };
 
 export const getLevelInfo = (level, gameType) => {
-  const LEVELS = get_levels(gameType);
+  const LEVELS = getLevels(gameType);
   const { dim, colors, time, movesLeft } = LEVELS[level];
   return {
     level,
@@ -29,7 +33,7 @@ export const getLevelInfo = (level, gameType) => {
 };
 
 export const isLevelComplete = ({ level, gameType }) => {
-  return level === get_levels(gameType).length;
+  return level === getLevels(gameType).length;
 };
 
 export const getNextLevelState = state => {
@@ -72,7 +76,7 @@ export const newGameState = gameType => {
 };
 
 export const getTimeBonus = (level, startTime, gameType) => {
-  const LEVELS = get_levels(gameType);
+  const LEVELS = getLevels(gameType);
   const levelTime = LEVELS[level].time * 1000;
   const currentTime = new Date().getTime();
   const endTime = startTime + levelTime;

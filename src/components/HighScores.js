@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getHighScores } from '../utils/local-storage';
 import Subtitle from './Subtitle';
 import HighScoreRow from './HighScoreRow';
-import { ButtonPlayOriginal, ButtonPlayPlayPuzzle } from './Buttons';
+import { ButtonPlayGameType } from './Buttons';
 
 const getPlace = ({ scores, currentScore, currentInitials }) => {
   const placeIndex = scores.findIndex(score => {
@@ -133,8 +133,8 @@ const HighScores = ({
       </div>
 
       <div className="btn-wrapper">
-        <ButtonPlayOriginal {...{ restartGame }} />
-        <ButtonPlayPlayPuzzle {...{ restartGame }} />
+        <ButtonPlayGameType {...{ restartGame, gameType: 'original' }} />
+        <ButtonPlayGameType {...{ restartGame, gameType: 'puzzle' }} />
       </div>
     </>
   );
