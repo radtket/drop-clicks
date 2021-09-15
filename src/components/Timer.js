@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { GAME_SIZE } from '../utils/constants';
 
 const Timer = ({
@@ -30,7 +31,10 @@ const Timer = ({
   return (
     <div className="timer-wrapper" style={{ width }}>
       <div
-        className={active ? 'timer timer-animation' : 'timer timer-inactive'}
+        className={classNames('timer', {
+          'timer-animation': active,
+          'timer-inactive': !active,
+        })}
         onAnimationEnd={setGameOver}
         style={{
           animationDuration: `${time}s`,

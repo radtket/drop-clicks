@@ -11,23 +11,14 @@ const InitialOverlay = ({ restartGame }) => {
     gameType: 'original',
   });
 
-  const style = {
-    fontSize: '1.4em',
-    margin: 0,
-    padding: '1.175em 1.125em',
-    textAlign: 'center',
-    width: '220px',
-  };
-
   return (
     <Overlay highScore={state.showHighScore} noAnimation>
       {!state.showHighScore ? (
         <>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <button
-              className="btn"
+              className="btn overlay-btn"
               onClick={restartGame('original')}
-              style={style}
               type="button"
             >
               Play Original
@@ -36,9 +27,8 @@ const InitialOverlay = ({ restartGame }) => {
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <button
-              className="btn"
+              className="btn overlay-btn"
               onClick={restartGame('puzzle')}
-              style={style}
               type="button"
             >
               Play Puzzle
@@ -50,14 +40,13 @@ const InitialOverlay = ({ restartGame }) => {
           </div>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <button
-              className="btn"
+              className="btn overlay-btn"
               onClick={() => {
                 setState({
                   showHighScore: true,
                   gameType: 'original',
                 });
               }}
-              style={style}
               type="button"
             >
               High Scores
@@ -66,14 +55,13 @@ const InitialOverlay = ({ restartGame }) => {
           </div>
           <div className="button-wrapper">
             <button
-              className="btn"
+              className="btn overlay-btn"
               onClick={() => {
                 setState({
                   showHighScore: true,
                   gameType: 'puzzle',
                 });
               }}
-              style={style}
               type="button"
             >
               High Scores

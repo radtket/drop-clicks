@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import './App.scss';
 
 // Components
@@ -289,30 +290,12 @@ class App extends Component {
       movesLeft,
     } = this.state;
 
-    // Rounding up seems to be a good way of handling weird subpixel issues.
-    const squareHeight = Math.ceil(GAME_SIZE / dim);
-
     const effectiveRotation = rotating
       ? rotation + rotationDirection
       : rotation;
 
-    const gameStyle = {
-      height: `${GAME_SIZE}px`,
-      width: `${GAME_SIZE}px`,
-      transform: `rotate(${effectiveRotation * 90}deg)`,
-    };
-
-    let classes = effectiveRotation % 2 ? 'sideways' : 'upright';
-
-    if (rotating) {
-      classes += ' rotating';
-    }
-    if (falling) {
-      classes += ' falling';
-    }
-
     const inactive = !initialized || levelOver || gameOver || paused;
-
+    const isSideways = effectiveRotation % 2;
     return (
       <div id="wrapper">
         <div className=" header clearfix">
@@ -327,7 +310,7 @@ class App extends Component {
             <div className="score-container">
               <div className="score">
                 <div className="score-header">SCORE</div>
-                <div>{score.toLocaleString()}</div>
+                <div>{score}</div>
               </div>
 
               <LastScore key={clicks + level} score={lastScore} />
@@ -347,10 +330,19 @@ class App extends Component {
             />
           )}
           <div
-            className={classes}
+            className={classNames({
+              rotating,
+              falling,
+              sideways: isSideways,
+              upright: !isSideways,
+            })}
             id="game"
             onTransitionEnd={this.handleTransitionEnd}
-            style={gameStyle}
+            style={{
+              height: `${GAME_SIZE}px`,
+              width: `${GAME_SIZE}px`,
+              transform: `rotate(${effectiveRotation * 90}deg)`,
+            }}
           >
             {board
               .reduce((all, pile, col) => {
@@ -365,7 +357,8 @@ class App extends Component {
                         handleClick={this.handleClick}
                         rotation={rotation}
                         row={row}
-                        squareHeight={squareHeight}
+                        // Rounding up seems to be a good way of handling weird subpixel issues.
+                        squareHeight={Math.ceil(GAME_SIZE / dim)}
                       />
                     );
                   })

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Score = ({ score }) => {
   if (score > 0) {
-    return `+${score.toLocaleString()}`;
+    return `+${score}`;
   }
 
   if (score === 0) {

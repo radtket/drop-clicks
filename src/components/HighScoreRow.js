@@ -1,8 +1,9 @@
 import React from 'react';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-const formatDate = date => {
+const Date = ({ date }) => {
   switch (date) {
     case '12/25/2018':
       return (
@@ -22,29 +23,35 @@ const formatDate = date => {
   }
 };
 
-const HighScoreRow = ({ score, i, place }) => {
-  const classes =
-    place && i === place - 1 ? 'highscore-li new-score' : 'highscore-li';
-
-  const date = DateTime.fromISO(score.date).toLocaleString(DateTime.DATE_SHORT);
+const HighScoreRow = ({
+  date,
+  highscorePlace,
+  initials,
+  isNewScore,
+  score,
+}) => {
   return (
-    <li key={i} className={classes}>
+    <li
+      className={classNames('highscore-li', {
+        'new-score': isNewScore,
+      })}
+    >
       <span className="highscore-initials">
-        <span className="highscore-place">{i + 1}.</span> {score.initials}
+        <span className="highscore-place">{highscorePlace}.</span> {initials}
       </span>
-      <span className="highscore-score">{score.score.toLocaleString()}</span>
-      <span className="highscore-date">{formatDate(date)}</span>
+      <span className="highscore-score">{score}</span>
+      <span className="highscore-date">
+        <Date
+          date={DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT)}
+        />
+      </span>
     </li>
   );
 };
 
 HighScoreRow.propTypes = {
-  score: PropTypes.shape({
-    initials: PropTypes.string.isRequired,
-    score: PropTypes.number.isRequired,
-  }).isRequired,
-  i: PropTypes.number.isRequired,
-  place: PropTypes.number.isRequired,
+  initials: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default HighScoreRow;

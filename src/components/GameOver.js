@@ -86,7 +86,7 @@ class GameOver extends Component {
         ) : (
           <>
             <h2>Game Over</h2>
-            <h3 className="final-score">Score: {score.toLocaleString()}</h3>
+            <h3 className="final-score">Score: {score}</h3>
             <HighScoreFragment
               {...{
                 handleChange: e => {

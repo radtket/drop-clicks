@@ -1,24 +1,39 @@
+$color-white: #fff;
+$red: #f44336;
+$color_cod_gray_approx: #191919;
+$color_zuccini_approx: #0a4a2c;
+$color_sunflower_approx: #ddcd22;
+$color_turbo_approx: #efef00;
+$color_jonquil_approx: #dfffa3;
+$color_sushi_approx: #83af3f;
+$color_jewel_approx: #1a8037;
+$color_zuccini_approx: #0a4a04;
+$color_medium_red_violet_approx: #af3f83;
+$color_wild_willow_approx: #a9cc73;
+$color_bottle_green_approx: #0a4a2d;
+
 * {
 	padding: 0;
 	margin: 0;
+
 	box-sizing: border-box;
 }
 
 body {
-	background: #191919;
+	background: $color_cod_gray_approx;
 	overflow-x: hidden;
 	margin: 0;
 	padding: 0;
 	font-family: sans-serif;
-}
-
-html,
-body,
-#root {
-	/* vh units are weird on mobile */
 	height: 100%;
 }
+
+html {
+	height: 100%;
+}
+
 #root {
+	height: 100%;
 	display: flex;
 	align-items: center;
 }
@@ -32,8 +47,15 @@ body,
 #game {
 	position: relative;
 	margin: 30px auto 20px;
-	/* Font-awesome has a z-index? I think...? */
 	z-index: 5;
+
+	.explode-leave .square {
+		background: none;
+
+		transform: scale(0);
+
+		transition: all 0.3s ease;
+	}
 }
 
 button {
@@ -44,26 +66,9 @@ button {
 	overflow: visible;
 	cursor: pointer;
 	background: transparent;
-
-	/* inherit font & color from ancestor */
 	color: inherit;
 	font: inherit;
-
-	/* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
 	line-height: normal;
-
-	/* Corrects font smoothing for webkit */
-	-webkit-font-smoothing: inherit;
-	-moz-osx-font-smoothing: inherit;
-
-	/* Corrects inability to style clickable `input` types in iOS */
-	-webkit-appearance: none;
-
-	/* Remove excess padding and border in Firefox 4+ */
-	&::-moz-focus-inner {
-		border: 0;
-		padding: 0;
-	}
 }
 
 .clearfix {
@@ -72,7 +77,6 @@ button {
 	clear: both;
 }
 
-/* Header Stuff */
 .header {
 	align-items: flex-end;
 	display: flex;
@@ -87,65 +91,73 @@ h1 {
 	flex-grow: 1;
 	font-size: 1.4em;
 	text-align: center;
-	color: white;
+	color: $color-white;
+
+	span {
+		color: $color_jonquil_approx;
+		color: $color_sushi_approx;
+		color: $color_jewel_approx;
+	}
 }
 
 .header-container {
 	display: flex;
 }
+
 .score-container {
 	position: relative;
-}
-.score-container + .score-container {
-	margin-left: 10px;
+
+	+ .score-container {
+		margin-left: 10px;
+	}
 }
 
 .score {
-	/* position: relative; */
-	/* display: inline-block; */
-	/* background: #0b2239; */
-	background: #0a4a2c;
-	padding: 10px 10px;
+	background: $color_zuccini_approx;
+	padding: 10px;
 	font-size: 1.2em;
-	/* height: 25px; */
-	/* line-height: 47px; */
 	font-weight: bold;
-	border-radius: 3px;
-	/* color: white; */
 
-	color: #ddcd22;
+	border-radius: 3px;
+	color: $color_sunflower_approx;
 	margin-top: 8px;
 	text-align: center;
 }
 
 .score-header {
-	color: #efef00;
+	color: $color_turbo_approx;
 	font-size: 0.6em;
 }
 
 .moves {
 	text-align: center;
+
+	.icon-holder {
+		display: inline-block;
+		margin: 10px;
+		cursor: pointer;
+	}
+
+	i {
+		color: $color-white;
+		font-size: 80px;
+	}
 }
 
 .icon-holder {
 	display: inline-block;
 	margin: 10px;
 	cursor: pointer;
-	color: white;
+	color: $color-white;
 	font-size: 40px;
-}
-
-.moves .icon-holder {
-	display: inline-block;
-	margin: 10px;
-	cursor: pointer;
 }
 
 .moves-holder {
 	vertical-align: top;
 }
+
 .moves-holder-wrapper {
-	color: white;
+	color: $color-white;
 	font-size: 16px;
 	text-align: center;
 	height: 40px;
@@ -155,24 +167,11 @@ h1 {
 
 .moves-header {
 	font-size: 1em;
-	/* margin-top: 10px; */
 	font-weight: bold;
 }
 
 .moves-remaining {
 	font-size: 1.2em;
-}
-
-/*  Why doesn't this work? */
-.moves i {
-	color: white;
-	font-size: 80px;
-}
-
-h1 span {
-	color: rgb(223, 255, 163);
-	color: #83af3f;
-	color: #1a8037;
 }
 
 .overlay {
@@ -182,52 +181,44 @@ h1 span {
 	justify-content: center;
 	align-items: center;
 	top: -1em;
-	color: #ddcd22;
-	background: rgba(10, 74, 44, 0.9);
+	color: $color_sunflower_approx;
+	background: rgba($color_zuccini_approx, 0.9);
 	right: -1em;
 	padding: 1em;
+
 	border-radius: 2em;
 	position: absolute;
 	min-height: 24em;
-
 	animation-name: fadein;
-	/* animation-iteration-count: infinite; */
 	animation-duration: 0.8s;
 	animation-timing-function: ease;
+
 	user-select: none;
 	width: 300px;
 	z-index: 1000;
-}
 
-/* Didn't work with CSSTransitionGroup...not a high priority */
-/* .overlay-leave {
-	animation-name: fadein;
-	animation-duration: 8s;
-	animation-direction: reverse;
-	animation-timing-function: linear;
-} */
-.overlay h2 {
-	text-align: center;
-	color: #efef00;
-	font-size: 1.9em;
-	/* font-size: 2.8em; */
-	margin-top: 20px;
-	margin-bottom: 0.6em;
-}
+	h2 {
+		text-align: center;
+		color: $color_turbo_approx;
+		font-size: 1.9em;
+		margin-top: 20px;
+		margin-bottom: 0.6em;
+	}
 
-.overlay h3 {
-	text-align: center;
-	font-size: 1em;
-	margin-top: 0.6em;
-}
+	h3 {
+		text-align: center;
+		font-size: 1em;
+		margin-top: 0.6em;
 
-.overlay .final-score {
-	color: white;
-	font-size: 1.6em;
-}
+		span {
+			color: $color-white;
+		}
+	}
 
-.overlay h3 span {
-	color: white;
+	.final-score {
+		color: $color-white;
+		font-size: 1.6em;
+	}
 }
 
 .overlay-text {
@@ -237,32 +228,56 @@ h1 span {
 }
 
 .translateX {
-	/* Prevents horizontal overflow */
 	position: absolute;
+	will-change: transform;
 }
-.translateX,
+
 .translateY {
 	will-change: transform;
 }
-.upright .translateY,
-.sideways .translateX {
-	transition: transform 0.3s cubic-bezier(0.21, -0.61, 0.46, -0.34);
-}
-.sideways .translateY,
-.upright .translateX,
-.falling.sideways .translateX,
-.falling.upright .translateX,
-.falling.sideways .translateY,
-.falling.upright .translateY {
-	transition: transform 0.3s ease;
+
+.upright {
+	.translateY {
+		transition: transform 0.3s cubic-bezier(0.21, -0.61, 0.46, -0.34);
+	}
+
+	.translateX {
+		transition: transform 0.3s ease;
+	}
 }
 
-#game .explode-leave .square {
-	background: none;
-	/* opacity: 0; */
-	transform: scale(0);
-	transition: all 0.3s ease;
+.sideways {
+	.translateX {
+		transition: transform 0.3s cubic-bezier(0.21, -0.61, 0.46, -0.34);
+	}
+
+	.translateY {
+		transition: transform 0.3s ease;
+	}
 }
+
+.falling {
+	&.sideways {
+		.translateX {
+			transition: transform 0.3s ease;
+		}
+
+		.translateY {
+			transition: transform 0.3s ease;
+		}
+	}
+
+	&.upright {
+		.translateX {
+			transition: transform 0.3s ease;
+		}
+
+		.translateY {
+			transition: transform 0.3s ease;
+		}
+	}
+}
+
 .square {
 	border-radius: 25%;
 	height: 96%;
@@ -271,19 +286,23 @@ h1 span {
 }
 
 .color-4 {
-	background: #af3f83;
+	background: $color_medium_red_violet_approx;
 }
+
 .color-3 {
-	background: #0a4a2c;
+	background: $color_zuccini_approx;
 }
+
 .color-2 {
-	background: #1a8037;
+	background: $color_jewel_approx;
 }
+
 .color-1 {
-	background: #83af3f;
+	background: $color_sushi_approx;
 }
+
 .color-0 {
-	background: #ddcd22;
+	background: $color_sunflower_approx;
 }
 
 .rotating {
@@ -291,7 +310,8 @@ h1 span {
 }
 
 .timer {
-	background: white;
+	background: $color-white;
+
 	border-radius: 5px;
 	height: 10px;
 	margin: auto;
@@ -304,6 +324,7 @@ h1 span {
 .timer-wrapper {
 	margin: auto;
 }
+
 .timer-animation {
 	animation-name: timer;
 	animation-timing-function: linear;
@@ -312,34 +333,30 @@ h1 span {
 @keyframes fadein {
 	from {
 		opacity: 0;
-		/* top: 0;
-		left: 0;
-		padding: 0; */
 	}
 
 	to {
-		/* top: -1em;
-		left: -1em; */
 		opacity: 1;
-		/* padding: 1em; */
 	}
 }
 
 @keyframes timer {
 	from {
 		width: 100%;
-		background: white;
+		background: $color-white;
 	}
 
 	79% {
-		background: white;
+		background: $color-white;
 	}
+
 	80% {
-		background: red;
+		background: $red;
 	}
+
 	to {
 		width: 0;
-		background: red;
+		background: $red;
 	}
 }
 
@@ -347,48 +364,55 @@ h1 span {
 	text-align: center;
 	margin: 20px;
 }
+
 .btn {
-	/* background: #83af3f; */
-	/* color: #0a4a2c; */
-	/* border: 0 none; */
-	background: #a9cc73;
-	color: #0a4a2d;
-	border: 3px solid #a9cc73;
+	background: $color_wild_willow_approx;
+	color: $color_bottle_green_approx;
+	border: 3px solid $color_wild_willow_approx;
+
 	border-radius: 6px 6px 6px 6px;
 	cursor: pointer;
 	display: inline-block;
 	vertical-align: middle;
 	font-size: 1.125em;
-	font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial,
-		sans-serif;
+	font-family: Lato, Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif;
 	margin: 0 0.625em;
 	outline: 0 none;
 	text-decoration: none;
 	line-height: inherit;
 	padding: 0.875em 1.125em;
 	margin-bottom: 0.625em;
-	transition: all 0.4s ease;
-}
 
-.btn:hover {
-	background: #0a4a2d;
-	border: 3px solid #ddce23;
-	color: #ddce23;
+	transition: all 0.4s ease;
+
+	&.overlay-btn {
+		font-size: 1.4em;
+		margin: 0;
+		padding: 1.175em 1.125em;
+		text-align: center;
+		width: 220px;
+	}
+
+	&:hover {
+		background: $color_bottle_green_approx;
+		border: 3px solid $color_sunflower_approx;
+		color: $color_sunflower_approx;
+	}
 }
 
 .highscore-input {
 	text-align: center;
-}
 
-.highscore-input input {
-	background: transparent;
-	color: white;
-	height: 60px;
-	font-size: 60px;
-	margin: 10px;
-	padding: 0 0.2em;
-	text-align: center;
-	font-family: Courier New, Courier, monospace;
+	input {
+		background: transparent;
+		color: $color-white;
+		height: 60px;
+		font-size: 60px;
+		margin: 10px;
+		padding: 0 0.2em;
+		text-align: center;
+		font-family: Courier New, Courier, monospace;
+	}
 }
 
 .highscore-li {
@@ -397,14 +421,12 @@ h1 span {
 }
 
 .highscore-place {
-	color: #a9cc73;
+	color: $color_wild_willow_approx;
 	width: 24px;
 	display: inline-block;
-	/* display: none; */
 }
 
 .highscore-date {
-	/* float: right; */
 	display: none;
 }
 
@@ -417,9 +439,9 @@ h1 span {
 	90% {
 		opacity: 0.6;
 	}
+
 	to {
 		top: -30%;
-		/* font-size: 0.8em; */
 		opacity: 0;
 	}
 }
@@ -430,7 +452,7 @@ h1 span {
 	left: 50%;
 	margin-left: -50px;
 	width: 100px;
-	color: white;
+	color: $color-white;
 	text-align: center;
 	font-size: 1.2em;
 	animation-name: scorefadeout;
@@ -441,32 +463,39 @@ h1 span {
 .bonus-wrapper {
 	height: 120px;
 }
-.piece-bonus,
-.time-bonus,
-.total-score,
-.next-level {
+
+.piece-bonus {
 	animation-name: zoomFadeIn;
 	animation-duration: 0.6s;
-	/* animation-iteration-count: infinite; */
+	animation-fill-mode: forwards;
+	visibility: hidden;
+	animation-delay: 0.5s;
+}
+
+.time-bonus {
+	animation-name: zoomFadeIn;
+	animation-duration: 0.6s;
 	animation-fill-mode: forwards;
 	visibility: hidden;
 }
 
-.time-bonus {
-}
-.piece-bonus {
-	animation-delay: 0.5s;
-}
 .total-score {
+	animation-name: zoomFadeIn;
+	animation-duration: 0.6s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
 	animation-delay: 1s;
 }
+
 .next-level {
+	animation-name: zoomFadeIn;
+	animation-duration: 0.6s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
 	opacity: 0;
 	margin-top: 2em;
 	animation-delay: 1.5s;
 	animation-duration: 0.2s;
-	/* Prevents overlay moving around in some browsers */
-	/* height: 40px; */
 }
 
 @keyframes zoomFadeIn {
@@ -482,6 +511,7 @@ h1 span {
 		visibility: visible;
 	}
 }
+
 .highscore-wrapper {
 	text-align: center;
 }
@@ -489,41 +519,46 @@ h1 span {
 .highscore-table {
 	list-style: none;
 	display: inline-block;
-	/* width: 450px; */
 	width: 260px;
 	text-align: left;
+
+	li {
+		font-size: 1.4em;
+		height: 1.2em;
+
+		&.new-score {
+			color: $color-white;
+		}
+
+		&:nth-child(1) {
+			font-size: 2.2em;
+			margin-bottom: 0.2em;
+		}
+
+		&:nth-child(2) {
+			font-size: 1.8em;
+			margin-bottom: 0.2em;
+		}
+
+		&:nth-child(3) {
+			font-size: 1.6em;
+			margin-bottom: 5px;
+		}
+	}
 }
-.highscore-table li {
-	font-size: 1.4em;
-	height: 1.2em;
-}
-.highscore-table li.new-score {
-	color: white;
-}
-/* .highscore-table li:not(:nth-child(1)):not(:nth-child(2))  */
+
 .highscore-score {
-	/* float: right; */
 }
-.highscore-table li:nth-child(1) {
-	font-size: 2.2em;
-	margin-bottom: 0.2em;
-}
-.highscore-table li:nth-child(2) {
-	font-size: 1.8em;
-	margin-bottom: 0.2em;
-}
-.highscore-table li:nth-child(3) {
-	font-size: 1.6em;
-	margin-bottom: 5px;
-}
+
 .highscore-toggle {
-	border: 1px dashed #efef00;
+	border: 1px dashed $color_turbo_approx;
 	display: inline-block;
 	margin-right: -0.1em;
 	padding: 0 0.3em;
 	text-align: right;
 	width: 4.8em;
 }
+
 .highscore-toggle-arrow {
 	display: block;
 	float: left;
@@ -540,16 +575,17 @@ h1 span {
 .paused-button-wrapper {
 	display: block;
 	text-align: center;
+
+	&:first-of-type {
+		margin-bottom: 40px;
+	}
+
+	.btn {
+		font-size: 1.4em;
+		width: 200px;
+	}
 }
 
-.paused-button-wrapper:first-of-type {
-	margin-bottom: 40px;
-}
-
-.paused-button-wrapper .btn {
-	font-size: 1.4em;
-	width: 200px;
-}
 @media (min-width: 600px) {
 	#wrapper {
 		width: 500px;
@@ -560,21 +596,24 @@ h1 span {
 		padding-bottom: 0;
 		text-align: left;
 	}
+
 	.overlay {
 		min-height: 620px;
 		width: 500px;
-	}
-	.overlay.overlay-high-score {
-		min-height: 636px;
-		padding-bottom: 0;
-		justify-content: space-around;
-	}
-	.overlay h2 {
-		font-size: 2.8em;
-		/* margin-bottom: 1.5em; */
-	}
-	.overlay h3 {
-		margin: 20px;
+
+		&.overlay-high-score {
+			min-height: 636px;
+			padding-bottom: 0;
+			justify-content: space-around;
+		}
+
+		h2 {
+			font-size: 2.8em;
+		}
+
+		h3 {
+			margin: 20px;
+		}
 	}
 
 	.overlay-text {
@@ -583,12 +622,6 @@ h1 span {
 
 	.next-level {
 		margin-top: 3.5em;
-	}
-	.highscore-input input {
-		height: 80px;
-		font-size: 80px;
-		margin: 20px;
-		padding: 0 0.2em;
 	}
 
 	.moves-holder-wrapper {
@@ -604,29 +637,41 @@ h1 span {
 	.moves-remaining {
 		font-size: 2em;
 	}
+
 	.icon-holder {
 		font-size: 80px;
 	}
 
 	.highscore-table {
 		width: 450px;
+
+		li {
+			height: 1.4em;
+		}
 	}
 
 	.highscore-initials {
 		width: 130px;
 	}
+
 	.highscore-score {
 		text-align: left;
 		flex-grow: 1;
 	}
+
 	.highscore-date {
 		display: block;
 	}
+
 	.bonus-wrapper {
 		height: 180px;
 	}
-	.highscore-table li {
-		height: 1.4em;
+
+	.highscore-input input {
+		height: 80px;
+		font-size: 80px;
+		margin: 20px;
+		padding: 0 0.2em;
 	}
 
 	.paused-button-wrapper:first-of-type {

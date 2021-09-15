@@ -85,7 +85,18 @@ class HighScores extends Component {
         <div className="highscore-wrapper">
           <ol className="highscore-table">
             {currentScores.map((score, i) => {
-              return <HighScoreRow key={i} i={i} place={place} score={score} />;
+              return (
+                <HighScoreRow
+                  key={i}
+                  i={i}
+                  place={place}
+                  {...{
+                    ...score,
+                    isNewScore: Boolean(place && i === place - 1),
+                    highscorePlace: i + 1,
+                  }}
+                />
+              );
             })}
           </ol>
           {!currentScores.length && (

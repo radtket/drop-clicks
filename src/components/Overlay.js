@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const Overlay = ({ children, noAnimation, highScore }) => {
   return (
     <div
-      className={highScore ? 'overlay overlay-high-score' : 'overlay'}
+      className={classNames('overlay', {
+        'overlay-high-score': highScore,
+      })}
       style={noAnimation ? { animation: 'none' } : {}}
     >
       {children}

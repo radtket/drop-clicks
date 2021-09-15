@@ -14,31 +14,32 @@ const LevelOver = ({
   goToNextLevel,
 }) => {
   const LEVELS = get_levels(gameType);
-  const completed = level === LEVELS.length;
+  const COMPLETED = level === LEVELS.length;
   const TOTAL_BONUS = timeBonus + pieceBonus + levelBonus;
+
   return (
     <Overlay rotation={rotation}>
-      <h2>{completed ? 'Game Completed!' : `Level ${level} Completed`}</h2>
+      <h2>{COMPLETED ? 'Game Completed!' : `Level ${level} Completed`}</h2>
       <div className="bonus-wrapper">
         {gameType === 'original' ? (
           <h3 className="time-bonus">
-            Time Bonus: <span>{timeBonus.toLocaleString()}</span>
+            Time Bonus: <span>{timeBonus}</span>
           </h3>
         ) : (
           <h3 className="time-bonus">
-            Level Bonus: <span>{levelBonus.toLocaleString()}</span>
+            Level Bonus: <span>{levelBonus}</span>
           </h3>
         )}
         <h3 className="piece-bonus">
-          Piece Bonus: <span>{pieceBonus.toLocaleString()}</span>
+          Piece Bonus: <span>{pieceBonus}</span>
         </h3>
         <h3 className="total-score">
-          Total Bonus: <span>{TOTAL_BONUS.toLocaleString()}</span>
+          Total Bonus: <span>{TOTAL_BONUS}</span>
         </h3>
       </div>
       <div className="next-level" style={{ textAlign: 'center' }}>
         <button className="btn" onClick={goToNextLevel} type="button">
-          {completed ? 'Finish' : 'Next Level'}
+          {COMPLETED ? 'Finish' : 'Next Level'}
         </button>
       </div>
     </Overlay>
