@@ -8,14 +8,14 @@ import { ButtonHighScore, ButtonPlayGameType } from './Buttons';
 import { GAME_TYPE_ORIGINAL, GAME_TYPE_PUZZLE } from '../utils/constants';
 
 const InitialOverlay = ({ restartGame }) => {
-  const [state, setState] = useState({
+  const [{ gameType, showHighScore }, setState] = useState({
     showHighScore: false,
     gameType: GAME_TYPE_ORIGINAL,
   });
 
   return (
-    <Overlay highScore={state.showHighScore} noAnimation>
-      {!state.showHighScore ? (
+    <Overlay highScore={showHighScore} noAnimation>
+      {!showHighScore ? (
         <>
           <div className="button-wrapper" style={{ marginBottom: '3em' }}>
             <ButtonPlayGameType
@@ -36,7 +36,7 @@ const InitialOverlay = ({ restartGame }) => {
         </>
       ) : (
         <HighScores
-          gameType={state.gameType}
+          gameType={gameType}
           restartGame={restartGame}
           scores={getHighScores().original}
         />

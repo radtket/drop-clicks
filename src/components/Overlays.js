@@ -25,17 +25,11 @@ const Overlays = ({
   timeBonus,
 }) => {
   if (!initialized) {
-    return <Initial restartGame={restartGame} />;
+    return <Initial {...{ restartGame }} />;
   }
 
   if (paused) {
-    return (
-      <Paused
-        restartGame={restartGame}
-        resumeGame={resumeGame}
-        rotation={rotation}
-      />
-    );
+    return <Paused {...{ rotation, resumeGame, restartGame }} />;
   }
 
   if (gameOver) {

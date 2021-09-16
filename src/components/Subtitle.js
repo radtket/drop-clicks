@@ -1,10 +1,10 @@
 import React from 'react';
 import { ENCOURAGEMENT } from '../utils/constants';
 
-const Subtitle = ({ place, showGlobal, globalPlace, globalPlays }) => {
+const Subtitle = ({ place, globalPlace, globalPlays }) => {
   const exclamation =
     ENCOURAGEMENT[Math.floor(Math.random() * ENCOURAGEMENT.length)];
-  if (showGlobal && globalPlace && globalPlays) {
+  if (globalPlace && globalPlays) {
     // Show place always
     const percentile = globalPlace / globalPlays;
     return (

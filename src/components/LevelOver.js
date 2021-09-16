@@ -19,15 +19,10 @@ const LevelOver = ({
     <Overlay rotation={rotation}>
       <h2>{COMPLETED ? 'Game Completed!' : `Level ${level} Completed`}</h2>
       <div className="bonus-wrapper">
-        {isGameOrigional(gameType) ? (
-          <h3 className="time-bonus">
-            Time Bonus: <span>{timeBonus}</span>
-          </h3>
-        ) : (
-          <h3 className="time-bonus">
-            Level Bonus: <span>{levelBonus}</span>
-          </h3>
-        )}
+        <h3 className="time-bonus">
+          {isGameOrigional(gameType) ? 'Time' : 'Level'} Bonus:{' '}
+          <span>{isGameOrigional(gameType) ? timeBonus : levelBonus}</span>
+        </h3>
         <h3 className="piece-bonus">
           Piece Bonus: <span>{pieceBonus}</span>
         </h3>

@@ -106,7 +106,7 @@ const HighScores = ({
         High Scores
       </h2>
 
-      <Subtitle {...{ showGlobal, place, globalPlace, globalPlays }} />
+      {showGlobal && <Subtitle {...{ place, globalPlace, globalPlays }} />}
 
       <div className="highscore-wrapper">
         <ol className="highscore-table">
