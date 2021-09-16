@@ -327,15 +327,17 @@ class App extends Component {
                   pile.map((square, row) => {
                     return (
                       <Square
-                        key={square.id}
-                        col={col}
-                        color={square.val}
-                        dim={dim}
-                        handleClick={this.handleClick}
-                        rotation={rotation}
-                        row={row}
-                        // Rounding up seems to be a good way of handling weird subpixel issues.
-                        squareHeight={Math.ceil(GAME_SIZE / dim)}
+                        {...{
+                          key: square.id,
+                          col,
+                          color: square.val,
+                          dim,
+                          handleClick: this.handleClick,
+                          rotation,
+                          row,
+                          // Rounding up seems to be a good way of handling weird subpixel issues.
+                          squareHeight: Math.ceil(GAME_SIZE / dim),
+                        }}
                       />
                     );
                   })
@@ -349,21 +351,26 @@ class App extends Component {
         </div>
         {isGameOrigional(gameType) && (
           <Timer
-            active={!inactive}
-            elapsedTime={elapsedTime}
-            hasBeenPaused={hasBeenPaused}
-            setGameOver={() => {
-              this.setState({ gameOver: true });
+            {...{
+              active: !inactive,
+              elapsedTime,
+              hasBeenPaused,
+              startTime,
+              time,
+              setGameOver: () => {
+                this.setState({ gameOver: true });
+              },
             }}
-            startTime={startTime}
-            time={time}
           />
         )}
         <BottomNav
-          active={!inactive}
           handleRandom={this.handleRandom}
           handleRotate={this.handleRotate}
           movesLeft={movesLeft}
+          {...{
+            active: !inactive,
+            movesLeft,
+          }}
         />
       </div>
     );

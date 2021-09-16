@@ -29,7 +29,7 @@ const Timer = ({
   }, [active, startTime, time]);
 
   return (
-    <div className="timer-wrapper" style={{ width }}>
+    <div style={{ width, margin: 'auto' }}>
       <div
         className={classNames('timer', {
           'timer-animation': active,

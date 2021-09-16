@@ -19,18 +19,18 @@ const LevelOver = ({
     <Overlay rotation={rotation}>
       <h2>{COMPLETED ? 'Game Completed!' : `Level ${level} Completed`}</h2>
       <div className="bonus-wrapper">
-        <h3 className="time-bonus">
+        <h3 className="fuck-dude time-bonus">
           {isGameOrigional(gameType) ? 'Time' : 'Level'} Bonus:{' '}
           <span>{isGameOrigional(gameType) ? timeBonus : levelBonus}</span>
         </h3>
-        <h3 className="piece-bonus">
+        <h3 className="fuck-dude piece-bonus">
           Piece Bonus: <span>{pieceBonus}</span>
         </h3>
-        <h3 className="total-score">
+        <h3 className="fuck-dude total-score">
           Total Bonus: <span>{timeBonus + pieceBonus + levelBonus}</span>
         </h3>
       </div>
-      <div className="next-level" style={{ textAlign: 'center' }}>
+      <div className="fuck-dude next-level" style={{ textAlign: 'center' }}>
         <button className="btn" onClick={goToNextLevel} type="button">
           {COMPLETED ? 'Finish' : 'Next Level'}
         </button>

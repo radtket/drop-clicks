@@ -51,13 +51,15 @@ const Overlays = ({
   if (levelOver) {
     return (
       <LevelOver
-        gameType={gameType}
-        goToNextLevel={goToNextLevel}
-        level={level + 1}
-        levelBonus={levelBonus}
-        pieceBonus={pieceBonus}
-        rotation={rotation}
-        timeBonus={timeBonus}
+        {...{
+          gameType,
+          goToNextLevel,
+          level: level + 1,
+          levelBonus,
+          pieceBonus,
+          rotation,
+          timeBonus,
+        }}
       />
     );
   }

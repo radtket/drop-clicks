@@ -17,28 +17,22 @@ const InitialOverlay = ({ restartGame }) => {
     <Overlay highScore={showHighScore} noAnimation>
       {!showHighScore ? (
         <>
-          <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <ButtonPlayGameType
-              {...{ restartGame, gameType: GAME_TYPE_ORIGINAL, hasIcon: true }}
-            />
-          </div>
-          <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <ButtonPlayGameType
-              {...{ restartGame, gameType: GAME_TYPE_PUZZLE, hasIcon: true }}
-            />
-          </div>
-          <div className="button-wrapper" style={{ marginBottom: '3em' }}>
-            <ButtonHighScore {...{ setState, gameType: GAME_TYPE_ORIGINAL }} />
-          </div>
-          <div className="button-wrapper">
-            <ButtonHighScore {...{ setState, gameType: GAME_TYPE_PUZZLE }} />
-          </div>
+          <ButtonPlayGameType
+            {...{ restartGame, gameType: GAME_TYPE_ORIGINAL, hasIcon: true }}
+          />
+          <ButtonPlayGameType
+            {...{ restartGame, gameType: GAME_TYPE_PUZZLE, hasIcon: true }}
+          />
+          <ButtonHighScore {...{ setState, gameType: GAME_TYPE_ORIGINAL }} />
+          <ButtonHighScore {...{ setState, gameType: GAME_TYPE_PUZZLE }} />
         </>
       ) : (
         <HighScores
-          gameType={gameType}
-          restartGame={restartGame}
-          scores={getHighScores().original}
+          {...{
+            gameType,
+            restartGame,
+            scores: getHighScores().original,
+          }}
         />
       )}
     </Overlay>

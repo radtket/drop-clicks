@@ -10,7 +10,6 @@ const Icon = ({ gameType }) => {
         'fa-clock': gameType === GAME_TYPE_ORIGINAL,
         'fa-puzzle-piece': gameType === GAME_TYPE_PUZZLE,
       })}
-      style={{ marginLeft: '0.2em' }}
     />
   );
 };

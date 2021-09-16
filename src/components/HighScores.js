@@ -113,13 +113,13 @@ const HighScores = ({
           {currentScores.map((score, i) => {
             return (
               <HighScoreRow
-                key={i}
-                i={i}
-                place={place}
                 {...{
                   ...score,
                   isNewScore: Boolean(place && i === place - 1),
                   highscorePlace: i + 1,
+                  place,
+                  i,
+                  key: i,
                 }}
               />
             );

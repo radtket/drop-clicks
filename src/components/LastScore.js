@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const Score = ({ score }) => {
   if (score > 0) {
@@ -15,12 +16,7 @@ const Score = ({ score }) => {
 
 const LastScore = ({ score }) => {
   return (
-    <div
-      className="last-score"
-      style={{
-        color: score < 0 ? 'red' : 'white',
-      }}
-    >
+    <div className={classNames('last-score', { red: score < 0 })}>
       <Score {...{ score }} />
     </div>
   );

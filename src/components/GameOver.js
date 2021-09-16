@@ -82,15 +82,17 @@ const GameOver = ({
     <Overlay highScore={submitted} rotation={rotation}>
       {submitted ? (
         <HighScores
-          currentInitials={initials}
-          currentScore={score}
-          gameType={gameType}
-          globalPlace={globalPlace}
-          globalPlays={globalPlays}
-          highscoresGlobal={highscoresGlobal}
-          highscoresLocal={highscoresLocal}
-          restartGame={restartGame}
-          scores={highscores.original}
+          {...{
+            currentInitials: initials,
+            currentScore: score,
+            gameType,
+            globalPlace,
+            globalPlays,
+            highscoresGlobal,
+            highscoresLocal,
+            restartGame,
+            scores: highscores.original,
+          }}
         />
       ) : (
         <>

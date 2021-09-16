@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const BottomNav = ({ active, handleRotate, handleRandom, movesLeft }) => {
   return (
-    <div className="moves" style={{ opacity: active ? 1 : 0.3 }}>
+    <div className={classNames('moves', { active })}>
       <button className="icon-holder" onClick={handleRotate(-1)} type="button">
         <i className="fa fa-redo-alt fa-flip-horizontal" />
       </button>

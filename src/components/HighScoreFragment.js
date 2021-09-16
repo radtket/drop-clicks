@@ -10,7 +10,12 @@ const HighScoreFragment = ({
 }) => {
   return (
     <>
-      <div className="overlay-text">
+      <div
+        className="overlay-text"
+        style={{
+          color: 'inherit',
+        }}
+      >
         {isHighScore
           ? "You've got a high score! Please enter your initials."
           : 'Submit your score to see you how you did globally!'}

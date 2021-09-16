@@ -4,20 +4,19 @@ import { ENCOURAGEMENT } from '../utils/constants';
 const Subtitle = ({ place, globalPlace, globalPlays }) => {
   const exclamation =
     ENCOURAGEMENT[Math.floor(Math.random() * ENCOURAGEMENT.length)];
+
   if (globalPlace && globalPlays) {
-    // Show place always
-    const percentile = globalPlace / globalPlays;
     return (
-      <div className="overlay-text" style={{ color: 'white' }}>
+      <div className="overlay-text">
         #{globalPlace} of {globalPlays} All-Time.{' '}
-        {percentile < 0.5 && exclamation}
+        {globalPlace / globalPlays < 0.5 && exclamation}
       </div>
     );
   }
   if (place > 0) {
     // Show local
     return (
-      <div className="overlay-text" style={{ color: 'white' }}>
+      <div className="overlay-text">
         #{place} All-Time. {exclamation}
       </div>
     );
