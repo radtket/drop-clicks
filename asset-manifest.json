@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/drop-clicks/static/css/main.e7386b98.chunk.css",
+    "main.js": "/drop-clicks/static/js/main.3f7d7e6e.chunk.js",
+    "main.js.map": "/drop-clicks/static/js/main.3f7d7e6e.chunk.js.map",
+    "runtime-main.js": "/drop-clicks/static/js/runtime-main.1252e15b.js",
+    "runtime-main.js.map": "/drop-clicks/static/js/runtime-main.1252e15b.js.map",
+    "static/js/2.4c4953b1.chunk.js": "/drop-clicks/static/js/2.4c4953b1.chunk.js",
+    "static/js/2.4c4953b1.chunk.js.map": "/drop-clicks/static/js/2.4c4953b1.chunk.js.map",
+    "static/js/3.9b82a066.chunk.js": "/drop-clicks/static/js/3.9b82a066.chunk.js",
+    "static/js/3.9b82a066.chunk.js.map": "/drop-clicks/static/js/3.9b82a066.chunk.js.map",
+    "index.html": "/drop-clicks/index.html",
+    "static/css/main.e7386b98.chunk.css.map": "/drop-clicks/static/css/main.e7386b98.chunk.css.map",
+    "static/js/2.4c4953b1.chunk.js.LICENSE.txt": "/drop-clicks/static/js/2.4c4953b1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1252e15b.js",
+    "static/js/2.4c4953b1.chunk.js",
+    "static/css/main.e7386b98.chunk.css",
+    "static/js/main.3f7d7e6e.chunk.js"
+  ]
+}
